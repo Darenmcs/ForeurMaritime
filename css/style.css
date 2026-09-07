@@ -450,3 +450,15 @@ footer {
   font-size: 1rem;
   cursor: pointer;
 }
+/* ============================
+   Lien Hednai dans le footer
+   ============================ */
+#hednaiLink {
+  color: #1E90FF;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+#hednaiLink:hover {
+  text-decoration: underline;
+}
