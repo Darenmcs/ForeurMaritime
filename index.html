@@ -1,98 +1,276 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="clair">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Le Foreur Maritime / The Maritime Driller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-  <!-- PWA : manifest et couleur de thème -->
+  <title>Le Foreur Maritime, jeu de forage sous-marin gratuit | Hednai</title>
+  <meta name="description"
+    content="Le Foreur Maritime est un jeu de forage sous-marin gratuit, jouable dans le navigateur sur mobile, tablette et ordinateur. Descendez, ramassez l'or et les diamants, gérez votre oxygène. Bilingue français et anglais, installable hors ligne." />
+  <meta name="author" content="Daren, Hednai" />
+  <link rel="canonical" href="https://foreur.hednai.com/" />
+
+  <!-- Partage sur les reseaux et les messageries -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hednai" />
+  <meta property="og:locale" content="fr_CA" />
+  <meta property="og:locale:alternate" content="en_CA" />
+  <meta property="og:title" content="Le Foreur Maritime, jeu de forage sous-marin gratuit" />
+  <meta property="og:description"
+    content="Descendez le plus profond possible, ramassez l'or et les diamants avant de manquer d'oxygène. Jouable sur mobile, tablette et ordinateur." />
+  <meta property="og:url" content="https://foreur.hednai.com/" />
+  <meta property="og:image" content="https://foreur.hednai.com/assets/img/og-cover.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Le Foreur Maritime, jeu de forage sous-marin gratuit" />
+  <meta name="twitter:description"
+    content="Descendez le plus profond possible, ramassez l'or et les diamants avant de manquer d'oxygène." />
+  <meta name="twitter:image" content="https://foreur.hednai.com/assets/img/og-cover.png" />
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#00bcd4" />
+  <meta name="theme-color" content="#4682B4" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Foreur" />
   <link rel="apple-touch-icon" href="assets/img/player.png" />
+  <link rel="icon" href="assets/img/player.png" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Neuton:wght@400;700&family=Roboto:wght@400;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Polices alignees sur hednai.com -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" />
 
-  <script type="module" src="js/main.js" defer></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="module" src="js/main.js"></script>
 
-  <!-- Enregistrement du Service Worker pour le mode hors-ligne -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/service-worker.js")
-          .catch((err) => console.error("SW non enregistré :", err));
-      });
-    }
+  <!-- Donnees structurees pour les moteurs de recherche -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Le Foreur Maritime",
+    "alternateName": "The Maritime Driller",
+    "url": "https://foreur.hednai.com/",
+    "image": "https://foreur.hednai.com/assets/img/og-cover.png",
+    "description": "Jeu de forage sous-marin gratuit jouable dans le navigateur. Descendez le plus profond possible, ramassez l'or et les diamants, gerez votre reserve d'oxygene.",
+    "genre": ["Arcade", "Puzzle"],
+    "gamePlatform": ["Web browser", "Android", "iOS"],
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "inLanguage": ["fr", "en"],
+    "isAccessibleForFree": true,
+    "author": { "@type": "Person", "name": "Daren" },
+    "publisher": { "@type": "Organization", "name": "Hednai", "url": "https://hednai.com" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CAD", "availability": "https://schema.org/InStock" }
+  }
   </script>
 </head>
 
-<body>
-  <button id="languageSwitch">🇬🇧 EN</button>
+<body data-ecran="accueil">
 
-  <div id="header">
-    <h1 data-fr="🚢 Le Foreur Maritime" data-en="🚢 The Maritime Driller">🚢 Le Foreur Maritime</h1>
+  <div id="app">
+
+    <!-- Barre superieure : marque et reglages -->
+    <header id="barreHaut">
+      <p class="marque" data-i18n="app.titre">Le Foreur Maritime</p>
+
+      <nav class="outils">
+        <button type="button" id="boutonLangue" class="bouton-icone bouton-icone--texte"
+          data-i18n-aria="ctrl.langue">EN</button>
+
+        <button type="button" id="boutonSon" class="bouton-icone" data-etat="actif" data-i18n-aria="ctrl.son">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" />
+            <path class="icone-ondes" d="M16.5 8.5a5 5 0 0 1 0 7" />
+            <path class="icone-coupe" d="M17 9.5l4 5m0-5l-4 5" />
+          </svg>
+        </button>
+
+        <button type="button" id="boutonTheme" class="bouton-icone" data-etat="clair" data-i18n-aria="ctrl.theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path class="icone-lune" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+            <g class="icone-soleil">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4m0-14.2l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+            </g>
+          </svg>
+        </button>
+
+        <button type="button" id="boutonPause" class="bouton-icone" data-i18n-aria="ctrl.pause">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5h3v14H8zm5 0h3v14h-3z" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Scene de jeu : mer, tableau de bord et plateau -->
+    <main id="scene">
+      <div id="bateau" aria-hidden="true">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 60 L 180 60 L 170 80 L 30 80 Z" fill="#C41E3A" stroke="#8B0000" stroke-width="2" />
+          <rect x="40" y="50" width="120" height="10" fill="#E5E5E5" />
+          <rect x="70" y="30" width="60" height="20" fill="#FFFFFF" />
+          <rect x="85" y="15" width="30" height="15" fill="#87CEEB" />
+          <rect x="95" y="5" width="10" height="10" fill="#FF6347" />
+        </svg>
+      </div>
+
+      <div id="scoreBar">
+        <div class="pastille">
+          <span class="pastille__libelle" data-i18n="hud.profondeur">Profondeur</span>
+          <span class="pastille__valeur" id="valeurProfondeur">1 m</span>
+        </div>
+        <div class="pastille">
+          <span class="pastille__libelle" data-i18n="hud.score">Score</span>
+          <span class="pastille__valeur" id="valeurScore">0</span>
+        </div>
+        <div class="pastille pastille--accent">
+          <span class="pastille__libelle" data-i18n="hud.sonar">Sonar</span>
+          <span class="pastille__valeur" id="valeurSonar">1</span>
+        </div>
+      </div>
+
+      <div id="ligneOxygene">
+        <span class="oxygene__libelle" data-i18n="hud.oxygene">Oxygène</span>
+        <div id="jaugeOxygene" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <span id="barreOxygene"></span>
+        </div>
+        <span class="oxygene__palier" id="nomPalier">Plateau continental</span>
+      </div>
+
+      <div id="plateauConteneur">
+        <div id="zoneJeu" role="grid" aria-label="Plateau de forage"></div>
+      </div>
+    </main>
+
+    <!-- Commandes, placees dans la zone du pouce sur mobile -->
+    <footer id="barreBas">
+      <div class="pave">
+        <button type="button" id="boutonGauche" class="bouton-rond" data-i18n-aria="ctrl.gauche">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15 5l-7 7 7 7z" />
+          </svg>
+        </button>
+
+        <button type="button" id="boutonBas" class="bouton-rond bouton-rond--principal" data-i18n-aria="ctrl.bas">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 9l7 7 7-7z" />
+          </svg>
+        </button>
+
+        <button type="button" id="boutonDroit" class="bouton-rond" data-i18n-aria="ctrl.droite">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9 5l7 7-7 7z" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="boutonSonar" class="bouton-rond bouton-rond--sonar" data-i18n-aria="ctrl.sonar">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="2.5" />
+            <path d="M12 6a6 6 0 0 1 6 6M12 3a9 9 0 0 1 9 9" fill="none" />
+          </svg>
+        </button>
+        <button type="button" id="boutonFin" class="bouton-texte" data-i18n="ctrl.fin">Terminer la partie</button>
+      </div>
+    </footer>
+
   </div>
-  <!-- Bannière PWA discrète sous le header -->
-  <div id="pwaBanner" style="display:none;">
-    <div id="pwaBannerLeft">
-      <span id="pwaBannerIcon">F</span>
-      <span>⬇</span>
-      <span id="pwaBannerText" data-fr="Installer Le Foreur Maritime sur votre appareil"
-        data-en="Install The Maritime Driller on your device">Installer Le Foreur Maritime sur votre appareil</span>
+
+  <!-- Ecran d'accueil -->
+  <section id="ecranAccueil" class="ecran" aria-labelledby="titreAccueil">
+    <div class="carte">
+      <h1 id="titreAccueil" class="carte__titre" data-i18n="app.titre">Le Foreur Maritime</h1>
+      <p class="carte__texte" data-i18n="app.tagline"></p>
+
+      <div class="record">
+        <span data-i18n="accueil.record">Meilleur score</span>
+        <strong id="recordAccueil">0</strong>
+      </div>
+
+      <button type="button" id="boutonJouer" class="bouton-primaire" data-i18n="accueil.jouer">Commencer la
+        plongée</button>
+
+      <h2 class="carte__soustitre" data-i18n="accueil.legende">Ce que vous allez croiser</h2>
+      <ul class="legende">
+        <li>
+          <span class="tuile terre" aria-hidden="true"></span>
+          <span><strong data-i18n="legende.terre">Sédiment</strong><em data-i18n="legende.terre.desc"></em></span>
+        </li>
+        <li>
+          <span class="tuile roche" aria-hidden="true"></span>
+          <span><strong data-i18n="legende.roche">Roche</strong><em data-i18n="legende.roche.desc"></em></span>
+        </li>
+        <li>
+          <span class="tuile or" aria-hidden="true"></span>
+          <span><strong data-i18n="legende.or">Or</strong><em data-i18n="legende.or.desc"></em></span>
+        </li>
+        <li>
+          <span class="tuile diamant" aria-hidden="true"></span>
+          <span><strong data-i18n="legende.diamant">Diamant</strong><em data-i18n="legende.diamant.desc"></em></span>
+        </li>
+        <li>
+          <span class="tuile vide joueur" aria-hidden="true"></span>
+          <span><strong data-i18n="legende.joueur">Foreur</strong><em data-i18n="legende.joueur.desc"></em></span>
+        </li>
+      </ul>
+
+      <p class="carte__aide" data-i18n="accueil.commandes"></p>
+
+      <p class="signature">
+        &copy; 2026 Le Foreur Maritime &ensp;|&ensp;
+        <span data-i18n="footer.propulse">Propulsé par</span>
+        <a href="https://hednai.com" target="_blank" rel="noopener noreferrer">Hednai</a>
+      </p>
     </div>
-    <button id="pwaBannerClose">✕</button>
-  </div>
+  </section>
 
-  <div id="shipContainer">
-    <div id="ship">
-      <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 20 60 L 180 60 L 170 80 L 30 80 Z" fill="#C41E3A" stroke="#8B0000" stroke-width="2" />
-        <rect x="40" y="50" width="120" height="10" fill="#E5E5E5" />
-        <rect x="70" y="30" width="60" height="20" fill="#FFFFFF" />
-        <rect x="85" y="15" width="30" height="15" fill="#87CEEB" />
-        <rect x="95" y="5" width="10" height="10" fill="#FF6347" />
+  <!-- Ecran de fin de partie -->
+  <section id="panneauFinJeu" class="ecran" aria-labelledby="titreFin">
+    <div class="carte carte--fin">
+      <h2 id="titreFin" class="carte__titre" data-i18n="fin.titre">Fin de la plongée</h2>
+      <p class="badge" id="badgeRecord" hidden data-i18n="fin.nouveauRecord">Nouveau record</p>
+      <p class="carte__texte" id="raisonFin"></p>
+
+      <dl class="bilan">
+        <div>
+          <dt data-i18n="hud.score">Score</dt>
+          <dd id="scoreFinal">0</dd>
+        </div>
+        <div>
+          <dt data-i18n="fin.profondeur">Profondeur atteinte</dt>
+          <dd id="profondeurFinale">1 m</dd>
+        </div>
+        <div>
+          <dt data-i18n="fin.record">Meilleur score</dt>
+          <dd id="recordFinal">0</dd>
+        </div>
+      </dl>
+
+      <button type="button" id="boutonRejouer" class="bouton-primaire" data-i18n="fin.rejouer">Replonger</button>
+      <button type="button" id="boutonAccueil" class="bouton-secondaire" data-i18n="fin.accueil">Retour à
+        l'accueil</button>
+    </div>
+  </section>
+
+  <!-- Bannière d'installation, masquee tant que le navigateur ne la propose pas -->
+  <div id="pwaBanner" hidden>
+    <span class="pwa__icone" aria-hidden="true">F</span>
+    <span class="pwa__texte" data-i18n="pwa.installer">Installer Le Foreur Maritime sur votre appareil</span>
+    <button type="button" id="pwaBannerClose" class="pwa__fermer" data-i18n-aria="pwa.fermer">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" />
       </svg>
-    </div>
-
-    <div id="scoreBar">
-      <span id="profondeur" data-fr="Profondeur : 1" data-en="Depth: 1">Profondeur : 1</span>
-      <span id="scoreActuel" data-fr="Score : 0" data-en="Score: 0">Score : 0</span>
-    </div>
-
-    <div id="zoneJeu"></div>
+    </button>
   </div>
 
-  <div id="controls">
-    <div id="buttonGrid">
-      <button id="boutonGauche" data-fr="⬅ Ouest" data-en="⬅ West">⬅ Ouest</button>
-      <button id="boutonBas" data-fr="⬇ Descendre" data-en="⬇ Down">⬇ Descendre</button>
-      <button id="boutonDroit" data-fr="➡ Est" data-en="➡ East">➡ Est</button>
-      <button id="boutonExplosion" data-fr="💥 Sonar" data-en="💥 Sonar">💥 Sonar</button>
-      <button id="boutonFin" data-fr="⛔ Terminer la partie" data-en="⛔ End Game">⛔ Terminer la partie</button>
-    </div>
-  </div>
-
-  <div id="panneauFinJeu">
-    <div id="boiteFinJeu">
-      <h2 id="titreFinJeu" data-fr="🏁 Fin de la partie" data-en="🏁 Game Over">🏁 Fin de la partie</h2>
-      <p id="texteScoreFinal" data-fr-prefix="Score : " data-en-prefix="Score: ">Score : 0</p>
-      <p id="texteMeilleurScore" data-fr-prefix="Meilleur score : " data-en-prefix="Best Score: ">Meilleur score : 0</p>
-      <button id="boutonNouvellePartie" data-fr="🔄 Nouvelle Partie" data-en="🔄 New Game">🔄 Nouvelle Partie</button>
-    </div>
-  </div>
-
-  <!-- Footer avec lien cliquable vers hednai.com -->
-  <footer id="footer">
-    &copy; 2025 Le Foreur Maritime&ensp;|&ensp;
-    <span data-fr="Propulsé par" data-en="Powered by">Propulsé par</span>
-    <a href="https://hednai.com" target="_blank" rel="noopener noreferrer" id="hednaiLink">Hednai</a>🌊
-  </footer>
 </body>
 
 </html>

@@ -1,25 +1,20 @@
 {
+  "id": "/",
   "name": "Le Foreur Maritime",
   "short_name": "Foreur",
-  "description": "Jeu de forage maritime - creuse, collecte de l'or et des diamants",
+  "description": "Jeu de forage sous-marin gratuit. Descendez le plus profond possible, ramassez l'or et les diamants avant de manquer d'oxygène.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0a1628",
-  "theme_color": "#00bcd4",
-  "orientation": "portrait",
+  "background_color": "#4682B4",
+  "theme_color": "#4682B4",
+  "orientation": "any",
   "lang": "fr",
+  "dir": "ltr",
+  "categories": ["games", "entertainment"],
   "icons": [
-    {
-      "src": "assets/img/player.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/img/player.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "assets/img/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/img/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
