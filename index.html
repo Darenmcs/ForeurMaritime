@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Foreur Maritime / The Maritime Driller</title>
+
+  <!-- PWA : manifest et couleur de thème -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#00bcd4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Foreur" />
+  <link rel="apple-touch-icon" href="assets/img/player.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Neuton:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="module" src="js/main.js" defer></script>
+
+  <!-- Enregistrement du Service Worker pour le mode hors-ligne -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .catch((err) => console.error("SW non enregistré :", err));
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <button id="languageSwitch">🇬🇧 EN</button>
+
+  <div id="header">
+    <h1 data-fr="🚢 Le Foreur Maritime" data-en="🚢 The Maritime Driller">🚢 Le Foreur Maritime</h1>
+  </div>
+    <!-- Bannière PWA discrète sous le header -->
+  <div id="pwaBanner" style="display:none;">
+    <div id="pwaBannerLeft">
+      <span id="pwaBannerIcon">F</span>
+      <span>⬇</span>
+      <span id="pwaBannerText" data-fr="Installer Le Foreur Maritime sur votre appareil" data-en="Install The Maritime Driller on your device">Installer Le Foreur Maritime sur votre appareil</span>
+    </div>
+    <button id="pwaBannerClose">✕</button>
+  </div>
+
+  <div id="shipContainer">
+    <div id="ship">
+      <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 20 60 L 180 60 L 170 80 L 30 80 Z" fill="#C41E3A" stroke="#8B0000" stroke-width="2"/>
+        <rect x="40" y="50" width="120" height="10" fill="#E5E5E5"/>
+        <rect x="70" y="30" width="60" height="20" fill="#FFFFFF"/>
+        <rect x="85" y="15" width="30" height="15" fill="#87CEEB"/>
+        <rect x="95" y="5" width="10" height="10" fill="#FF6347"/>
+      </svg>
+    </div>
+
+    <div id="scoreBar">
+      <span id="profondeur" data-fr="Profondeur : 1" data-en="Depth: 1">Profondeur : 1</span>
+      <span id="scoreActuel" data-fr="Score : 0" data-en="Score: 0">Score : 0</span>
+    </div>
+
+    <div id="zoneJeu"></div>
+  </div>
+
+  <div id="controls">
+    <div id="buttonGrid">
+      <button id="boutonGauche" data-fr="⬅ Ouest" data-en="⬅ West">⬅ Ouest</button>
+      <button id="boutonBas" data-fr="⬇ Descendre" data-en="⬇ Down">⬇ Descendre</button>
+      <button id="boutonDroit" data-fr="➡ Est" data-en="➡ East">➡ Est</button>
+      <button id="boutonExplosion" data-fr="💥 Sonar" data-en="💥 Sonar">💥 Sonar</button>
+      <button id="boutonFin" data-fr="⛔ Terminer la partie" data-en="⛔ End Game">⛔ Terminer la partie</button>
+    </div>
+  </div>
+
+  <div id="panneauFinJeu">
+    <div id="boiteFinJeu">
+      <h2 id="titreFinJeu" data-fr="🏁 Fin de la partie" data-en="🏁 Game Over">🏁 Fin de la partie</h2>
+      <p id="texteScoreFinal" data-fr-prefix="Score : " data-en-prefix="Score: ">Score : 0</p>
+      <p id="texteMeilleurScore" data-fr-prefix="Meilleur score : " data-en-prefix="Best Score: ">Meilleur score : 0</p>
+      <button id="boutonNouvellePartie" data-fr="🔄 Nouvelle Partie" data-en="🔄 New Game">🔄 Nouvelle Partie</button>
+    </div>
+  </div>
+
+  <footer id="footer"
+    data-fr="&copy; 2025 Le Foreur Maritime - hednai.com 🌊"
+    data-en="&copy; 2025 The Maritime Driller - hednai.com 🌊">
+    &copy; 2025 Le Foreur Maritime - hednai.com 🌊
+  </footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "Le Foreur Maritime",
+  "short_name": "Foreur",
+  "description": "Jeu de forage maritime - creuse, collecte de l'or et des diamants",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#00bcd4",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "assets/img/player.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/img/player.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
